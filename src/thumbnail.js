@@ -1,0 +1,113 @@
+// node-thumbnail
+// (c) 2011 Honza Pokorny
+// Licensed under BSD
+// https://github.com/honza/node-thumbnail
+
+var fs = require('fs');
+var path = require('path');
+var crypto = require('crypto');
+
+var im = require('imagemagick');
+var async = require('async');
+var _ = require('underscore');
+
+var options, settings, queue;
+
+var extensions = [
+  '.jpg',
+  '.jpeg',
+  '.JPG',
+  '.JPEG',
+  '.png',
+  '.PNG'
+];
+
+
+var createQueue = function() {
+
+  queue = async.queue(function (task, callback) {
+
+    if (settings.digest) {
+
+      var hash = crypto.createHash(settings.hashingType);
+      var stream = fs.ReadStream(task.options.srcPath);
+      
+      stream.on('data', function(d) {
+        hash.update(d);
+      });
+
+      stream.on('end', function() {
+        var d = hash.digest('hex');
+
+        task.options.dstPath = settings.destination + '/' + d + '_' +
+          settings.width + path.extname(task.options.srcPath);
+
+        im.resize(task.options, function(err, stdout, stderr) {
+          callback();
+        });
+
+      });
+
+    } else {
+      var name = task.options.srcPath;
+      var ext = path.extname(name);
+      var base = path.basename(name, ext);
+
+      task.options.dstPath = settings.destination + '/' + base +
+        settings.suffix + ext;
+
+      im.resize(task.options, function(err, stdout, stderr) {
+        callback();
+      });
+    }
+      
+  }, settings.concurency);
+
+  queue.drain = function() {
+    console.log('all items have been processed');
+  };
+};
+
+
+var run = function() {
+  var images = fs.readdirSync(settings.source);
+  images = _.reject(images, function(file) {
+    return _.indexOf(extensions, path.extname(file)) === -1;
+  });
+
+  createQueue();
+
+  _.each(images, function(image) {
+
+    options = {
+      srcPath: settings.source + '/' + image,
+      width: settings.width
+    };
+
+    queue.push({options: options}, function() {
+      console.log(image);
+    });
+
+  });
+};
+
+
+module.exports = function(options) {
+  if (options.args.length != 2) {
+    console.log('Please provide a source and destination directories.');
+    return;
+  }
+
+  if (path.existsSync(options.args[0]) && path.existsSync(options.args[1])) {
+    options.source = options.args[0];
+    options.destination = options.args[1];
+  } else {
+    console.log('Source or destination doesn\'t exist.');
+    return;
+  }
+
+  settings = options;
+
+  run();
+
+};

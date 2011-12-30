@@ -1,0 +1,27 @@
+{
+  "name": "node-thumbnail",
+  "description": "thumbnail all the things",
+  "keywords": ["thumbnail", "images"],
+  "author": "Honza Pokorny",
+  "version": "0.0.1",
+  "licenses": [{
+    "type": "BSD"
+  }],
+  "engines": {
+    "node": ">=0.4.0"
+  },
+  "bin": {
+    "thumb": "./bin/thumb"
+  },
+  "homepage": "https://github.com/honza/node-thumbnail",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/honza/node-thumbnail.git"
+  },
+  "dependencies": {
+    "async": ">= 0.1.15",
+    "imagemagick": ">= 0.1.2",
+    "commander": ">= 0.5.1",
+    "underscore": "latest"
+  }
+}
