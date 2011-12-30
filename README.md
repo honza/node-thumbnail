@@ -33,24 +33,24 @@ var thumb = require('node-thumbnail').thumb;
 // thumb(options, callback);
 
 thumb({
-    source: 'source/path',
-    destination: 'dest/path',
-    concurrency: 4
+  source: 'source/path',
+  destination: 'dest/path',
+  concurrency: 4
 }, function() {
-    console.log('All done!');
+  console.log('All done!');
 });
 ```
 
 default options:
 
 ```js
-    defaults = {
-      suffix: '_thumb',
-      digest: false,
-      hashingType: 'sha1',
-      width: 800,
-      concurrency: 2
-    };
+defaults = {
+  suffix: '_thumb',
+  digest: false,
+  hashingType: 'sha1',
+  width: 800,
+  concurrency: 2
+};
 ```
 
 **Note** you must specify at least `source` and `destination`
