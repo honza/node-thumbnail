@@ -27,20 +27,23 @@ options:
 api
 ---
 
-    var thumb = require('node-thumbnail').thumb;
+```js
+var thumb = require('node-thumbnail').thumb;
 
-    // thumb(options, callback);
+// thumb(options, callback);
 
-    thumb({
-      source: 'source/path',
-      destination: 'dest/path',
-      concurrency: 4
-    }, function() {
-      console.log('All done!');
-    });
+thumb({
+    source: 'source/path',
+    destination: 'dest/path',
+    concurrency: 4
+}, function() {
+    console.log('All done!');
+});
+```
 
 default options:
 
+```js
     defaults = {
       suffix: '_thumb',
       digest: false,
@@ -48,6 +51,7 @@ default options:
       width: 800,
       concurrency: 2
     };
+```
 
 **Note** you must specify at least `source` and `destination`
 
