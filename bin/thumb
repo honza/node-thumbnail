@@ -3,7 +3,7 @@
 var program = require('commander');
 
 program
-  .version('0.0.1')
+  .version('0.2.0')
   .usage('[options] source/dir dest/dir')
   .option('-s, --suffix [suffix]', 'Add [suffix] to thumb filename', '_thumb')
   .option('-d, --digest', 'Use digest for thumb filename')
