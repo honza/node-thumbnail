@@ -9,8 +9,8 @@ program
   .option('-d, --digest', 'Use digest for thumb filename')
   .option('-t, --hashing-type [type]', 'Hashing type sha1, md5. Must be used with -d')
   .option('-w, --width [width]', 'Thumbnail width in pixels. Default: 800', 800)
-  .option('-c, --concurency [num]', 'Number of workers', 2)
+  .option('-c, --concurrency [num]', 'Number of workers', 2)
   .parse(process.argv);
 
-var main = require('../src/thumbnail.js');
+var main = require('../src/thumbnail.js').thumb;
 main(program);

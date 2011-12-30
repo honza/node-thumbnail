@@ -11,7 +11,15 @@ var im = require('imagemagick');
 var async = require('async');
 var _ = require('underscore');
 
-var options, settings, queue;
+var options, settings, queue, defaults, done;
+
+defaults = {
+  suffix: '_thumb',
+  digest: false,
+  hashingType: 'sha1',
+  width: 800,
+  concurrency: 2
+};
 
 var extensions = [
   '.jpg',
@@ -61,10 +69,14 @@ var createQueue = function() {
       });
     }
       
-  }, settings.concurency);
+  }, settings.concurrency);
 
   queue.drain = function() {
-    console.log('all items have been processed');
+    if (done) {
+      done();
+    } else {
+      console.log('all items have been processed');
+    }
   };
 };
 
@@ -92,21 +104,29 @@ var run = function() {
 };
 
 
-module.exports = function(options) {
-  if (options.args.length != 2) {
-    console.log('Please provide a source and destination directories.');
-    return;
-  }
+exports.thumb = function(options, callback) {
+  if (options.args) {
 
-  if (path.existsSync(options.args[0]) && path.existsSync(options.args[1])) {
+    if (options.args.length != 2) {
+      console.log('Please provide a source and destination directories.');
+      return;
+    }
+
     options.source = options.args[0];
     options.destination = options.args[1];
+
+  }
+
+  if (path.existsSync(options.source) && path.existsSync(options.destination)) {
+    settings = _.defaults(options, defaults);
   } else {
-    console.log('Source or destination doesn\'t exist.');
+    console.log("Origin or destination doesn't exist.");
     return;
   }
 
-  settings = options;
+  if (callback) {
+    done = callback;
+  }
 
   run();
 

@@ -3,7 +3,11 @@ node-thumbnail
 
 thumbnail all the things
 
-usage:
+node-thumbnail creates a queue of images and converts them asynchronously using
+imagemagick - it's super fast
+
+command-line usage
+------------------
 
     thumb [options] source/path dest/path
 
@@ -18,7 +22,34 @@ options:
 
     -w, --width
 
-    -c NUM, --concurency NUM
+    -c NUM, --concurrency NUM
+
+api
+---
+
+    var thumb = require('node-thumbnail').thumb;
+
+    // thumb(options, callback);
+
+    thumb({
+      source: 'source/path',
+      destination: 'dest/path',
+      concurrency: 4
+    }, function() {
+      console.log('All done!');
+    });
+
+default options:
+
+    defaults = {
+      suffix: '_thumb',
+      digest: false,
+      hashingType: 'sha1',
+      width: 800,
+      concurrency: 2
+    };
+
+**Note** you must specify at least `source` and `destination`
 
 installation
 ------------
