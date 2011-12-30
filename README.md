@@ -60,3 +60,8 @@ installation
 
     $ brew install imagemagick
     $ npm install node-thumbnail
+
+license
+-------
+
+BSD, short and sweet
