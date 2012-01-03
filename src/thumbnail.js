@@ -11,7 +11,7 @@ var im = require('imagemagick');
 var async = require('async');
 var _ = require('underscore');
 
-var options, settings, queue, defaults, done;
+var options, queue, defaults, done;
 
 defaults = {
   suffix: '_thumb',
@@ -31,7 +31,7 @@ var extensions = [
 ];
 
 
-var createQueue = function() {
+var createQueue = function(settings) {
 
   queue = async.queue(function (task, callback) {
 
@@ -81,13 +81,13 @@ var createQueue = function() {
 };
 
 
-var run = function() {
+var run = function(settings) {
   var images = fs.readdirSync(settings.source);
   images = _.reject(images, function(file) {
     return _.indexOf(extensions, path.extname(file)) === -1;
   });
 
-  createQueue();
+  createQueue(settings);
 
   _.each(images, function(image) {
 
@@ -105,6 +105,8 @@ var run = function() {
 
 
 exports.thumb = function(options, callback) {
+  var settings;
+
   if (options.args) {
 
     if (options.args.length != 2) {
