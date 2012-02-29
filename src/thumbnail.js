@@ -33,13 +33,13 @@ var extensions = [
 
 var createQueue = function(settings) {
 
-  queue = async.queue(function (task, callback) {
+  queue = async.queue(function(task, callback) {
 
     if (settings.digest) {
 
       var hash = crypto.createHash(settings.hashingType);
       var stream = fs.ReadStream(task.options.srcPath);
-      
+
       stream.on('data', function(d) {
         hash.update(d);
       });
@@ -68,7 +68,7 @@ var createQueue = function(settings) {
         callback();
       });
     }
-      
+
   }, settings.concurrency);
 
   queue.drain = function() {
@@ -130,6 +130,6 @@ exports.thumb = function(options, callback) {
     done = callback;
   }
 
-  run();
+  run(settings);
 
 };
