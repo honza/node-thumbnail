@@ -1,11 +1,12 @@
+
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Helvetica';
+    font-family: Helvetica;
 }
 
 p, li {
-    font-family: 'Georgia';
+    font-family: Georgia;
     font-size: 16px;
     line-height: 140%;
 }
@@ -37,3 +38,4 @@ p, li {
     text-align: center;
     font-size: 12px;
 }
+
