@@ -24,6 +24,8 @@ options:
 
     -c NUM, --concurrency NUM
 
+    -q, --quiet
+
 api
 ---
 
