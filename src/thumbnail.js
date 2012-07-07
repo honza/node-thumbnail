@@ -119,7 +119,7 @@ exports.thumb = function(options, callback) {
 
   }
 
-  if (path.existsSync(options.source) && path.existsSync(options.destination)) {
+  if (fs.existsSync(options.source) && fs.existsSync(options.destination)) {
     settings = _.defaults(options, defaults);
   } else {
     console.log("Origin or destination doesn't exist.");
