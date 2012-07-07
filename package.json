@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "async": ">= 0.1.15",
-    "imagemagick": ">= 0.1.2",
+    "imagemagick": "git://github.com/rsms/node-imagemagick.git#158a638e9779c1c8675206640eeded71f542dc98",
     "commander": ">= 0.5.1",
     "underscore": ">= 1.2.3"
   }
