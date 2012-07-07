@@ -10,6 +10,7 @@ program
   .option('-t, --hashing-type [type]', 'Hashing type sha1, md5. Must be used with -d')
   .option('-w, --width [width]', 'Thumbnail width in pixels. Default: 800', 800)
   .option('-c, --concurrency [num]', 'Number of workers', 2)
+  .option('-q, --quiet', 'Supress all output')
   .parse(process.argv);
 
 var main = require('../src/thumbnail.js').thumb;

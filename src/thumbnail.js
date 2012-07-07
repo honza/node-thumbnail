@@ -11,17 +11,20 @@ var im = require('imagemagick');
 var async = require('async');
 var _ = require('underscore');
 
-var options, queue, defaults, done;
+var options, queue, defaults, done, extensions, createQueue, run;
+
 
 defaults = {
   suffix: '_thumb',
   digest: false,
   hashingType: 'sha1',
   width: 800,
-  concurrency: 2
+  concurrency: 2,
+  quiet: false
 };
 
-var extensions = [
+
+extensions = [
   '.jpg',
   '.jpeg',
   '.JPG',
@@ -31,7 +34,7 @@ var extensions = [
 ];
 
 
-var createQueue = function(settings) {
+createQueue = function(settings) {
 
   queue = async.queue(function(task, callback) {
 
@@ -75,13 +78,15 @@ var createQueue = function(settings) {
     if (done) {
       done();
     } else {
-      console.log('all items have been processed');
+      if (!settings.quiet) {
+        console.log('all items have been processed');
+      }
     }
   };
 };
 
 
-var run = function(settings) {
+run = function(settings) {
   var images = fs.readdirSync(settings.source);
   images = _.reject(images, function(file) {
     return _.indexOf(extensions, path.extname(file)) === -1;
@@ -97,7 +102,9 @@ var run = function(settings) {
     };
 
     queue.push({options: options}, function() {
-      console.log(image);
+      if (!settings.quiet) {
+        console.log(image);
+      }
     });
 
   });
@@ -119,7 +126,7 @@ exports.thumb = function(options, callback) {
 
   }
 
-  if (path.existsSync(options.source) && path.existsSync(options.destination)) {
+  if (fs.existsSync(options.source) && fs.existsSync(options.destination)) {
     settings = _.defaults(options, defaults);
   } else {
     console.log("Origin or destination doesn't exist.");
