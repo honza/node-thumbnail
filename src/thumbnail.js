@@ -67,9 +67,11 @@ createQueue = function(settings) {
       task.options.dstPath = settings.destination + '/' + base +
         settings.suffix + ext;
 
-      im.resize(task.options, function(err, stdout, stderr) {
-        callback();
-      });
+      if(!fs.existsSync(task.options.dstPath)) {
+        im.resize(task.options, function(err, stdout, stderr) {
+          callback();
+        });
+      }
     }
 
   }, settings.concurrency);
