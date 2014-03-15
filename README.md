@@ -38,8 +38,11 @@ thumb({
   source: 'source/path',
   destination: 'dest/path',
   concurrency: 4
-}, function() {
-  console.log('All done!');
+}, function(err) {
+  if(err === undefined)
+    console.dir('All done!');
+  else
+    console.dir(err);
 });
 ```
 
