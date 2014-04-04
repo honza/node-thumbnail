@@ -30,7 +30,9 @@ extensions = [
   '.JPG',
   '.JPEG',
   '.png',
-  '.PNG'
+  '.PNG',
+  '.gif',
+  '.GIF'
 ];
 
 
