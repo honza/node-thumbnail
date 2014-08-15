@@ -15,6 +15,7 @@ var options, queue, defaults, done, extensions, createQueue, run;
 
 
 defaults = {
+  prefix : '',
   suffix: '_thumb',
   digest: false,
   hashingType: 'sha1',
@@ -64,7 +65,7 @@ createQueue = function(settings) {
       var ext = path.extname(name);
       var base = path.basename(name, ext);
 
-      task.options.dstPath = settings.destination + '/' + base +
+      task.options.dstPath = settings.destination + '/' + settings.prefix + base +
         settings.suffix + ext;
 
       im.resize(task.options, function(err, stdout, stderr) {
