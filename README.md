@@ -17,6 +17,7 @@ options:
     -v, --version
 
     -s SUFFIX, --suffix SUFFIX
+    -p PREFXI, --prefix PREFIX
     -d, --digest
     -t TYPE, --hashing-type TYPE
 
@@ -47,6 +48,7 @@ default options:
 
 ```js
 defaults = {
+  prefix: '',
   suffix: '_thumb',
   digest: false,
   hashingType: 'sha1', // 'sha1', 'md5', 'sha256', 'sha512'
