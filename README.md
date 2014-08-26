@@ -54,7 +54,8 @@ defaults = {
   digest: false,
   hashingType: 'sha1', // 'sha1', 'md5', 'sha256', 'sha512'
   width: 800,
-  concurrency: 2
+  concurrency: 2,
+  overwrite: false
 };
 ```
 
