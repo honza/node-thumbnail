@@ -17,7 +17,7 @@ options:
     -v, --version
 
     -s SUFFIX, --suffix SUFFIX
-    -p PREFXI, --prefix PREFIX
+    -p PREFIX, --prefix PREFIX
     -d, --digest
     -t TYPE, --hashing-type TYPE
 
@@ -25,6 +25,7 @@ options:
 
     -c NUM, --concurrency NUM
 
+    -o, --overwrite
     -q, --quiet
 
 api
@@ -40,10 +41,7 @@ thumb({
   destination: 'dest/path',
   concurrency: 4
 }, function(err) {
-  if(err === undefined)
-    console.dir('All done!');
-  else
-    console.dir(err);
+  console.log('All done!');
 });
 ```
 

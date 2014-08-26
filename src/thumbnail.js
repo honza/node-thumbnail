@@ -21,7 +21,8 @@ defaults = {
   hashingType: 'sha1',
   width: 800,
   concurrency: 2,
-  quiet: false
+  quiet: false,
+  overwrite: false
 };
 
 
@@ -56,9 +57,11 @@ createQueue = function(settings) {
         task.options.dstPath = settings.destination + '/' + d + '_' +
           settings.width + path.extname(task.options.srcPath);
 
-        im.resize(task.options, function(err, stdout, stderr) {
-          callback();
-        });
+        if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
+          im.resize(task.options, function(err, stdout, stderr) {
+            callback();
+          });
+        }
 
       });
 
@@ -70,7 +73,7 @@ createQueue = function(settings) {
       task.options.dstPath = settings.destination + '/' + settings.prefix + base +
         settings.suffix + ext;
 
-      if(!fs.existsSync(task.options.dstPath)) {
+      if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
         im.resize(task.options, function(err, stdout, stderr) {
           callback();
         });

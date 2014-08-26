@@ -12,6 +12,7 @@ program
   .option('-w, --width [width]', 'Thumbnail width in pixels. Default: 800', 800)
   .option('-c, --concurrency [num]', 'Number of workers', 2)
   .option('-q, --quiet', 'Supress all output')
+  .option('-o, --overwrite', 'Overwrite existing thumbs')
   .parse(process.argv);
 
 var main = require('../src/thumbnail.js').thumb;
