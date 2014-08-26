@@ -31,7 +31,9 @@ extensions = [
   '.JPG',
   '.JPEG',
   '.png',
-  '.PNG'
+  '.PNG',
+  '.gif',
+  '.GIF'
 ];
 
 
@@ -68,9 +70,11 @@ createQueue = function(settings) {
       task.options.dstPath = settings.destination + '/' + settings.prefix + base +
         settings.suffix + ext;
 
-      im.resize(task.options, function(err, stdout, stderr) {
-        callback();
-      });
+      if(!fs.existsSync(task.options.dstPath)) {
+        im.resize(task.options, function(err, stdout, stderr) {
+          callback();
+        });
+      }
     }
 
   }, settings.concurrency);
