@@ -6,6 +6,7 @@
 var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
+var os = require('os');
 
 var im = require('imagemagick');
 var async = require('async');
@@ -20,7 +21,7 @@ defaults = {
   digest: false,
   hashingType: 'sha1',
   width: 800,
-  concurrency: 2,
+  concurrency: os.cpus().length,
   quiet: false,
   overwrite: false
 };
