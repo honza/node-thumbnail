@@ -62,6 +62,8 @@ createQueue = function(settings) {
           im.resize(task.options, function(err, stdout, stderr) {
             callback();
           });
+        } else {
+          callback();
         }
 
       });
@@ -78,6 +80,8 @@ createQueue = function(settings) {
         im.resize(task.options, function(err, stdout, stderr) {
           callback();
         });
+      } else {
+        callback();
       }
     }
 
