@@ -37,7 +37,7 @@ var thumb = require('node-thumbnail').thumb;
 // thumb(options, callback);
 
 thumb({
-  source: 'source/path',
+  source: 'source/path', // could be a filename: dest/path/image.jpg
   destination: 'dest/path',
   concurrency: 4
 }, function(err) {
