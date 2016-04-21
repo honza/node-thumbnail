@@ -96,7 +96,15 @@ createQueue = function(settings) {
 
 
 run = function(settings) {
-  var images = fs.readdirSync(settings.source);
+  var images;
+  
+  if (fs.statSync(settings.source).isFile()) {
+    images = [path.basename(settings.source)];
+    settings.source = path.dirname(settings.source);
+  } else {
+    images = fs.readdirSync(settings.source);
+  }
+  
   images = _.reject(images, function(file) {
     return _.indexOf(extensions, path.extname(file)) === -1;
   });
