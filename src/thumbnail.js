@@ -98,7 +98,7 @@ createQueue = function(settings) {
 run = function(settings) {
   var images;
   
-  if (path.extname(settings.source)) {
+  if (fs.statSync(settings.source).isFile()) {
     images = [path.basename(settings.source)];
     settings.source = path.dirname(settings.source);
   } else {
