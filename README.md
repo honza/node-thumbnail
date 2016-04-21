@@ -1,6 +1,8 @@
 node-thumbnail
 ==============
 
+[![npm version](https://badge.fury.io/js/node-thumbnail.svg)](https://badge.fury.io/js/node-thumbnail)
+
 thumbnail all the things
 
 node-thumbnail creates a queue of images and converts them asynchronously using
