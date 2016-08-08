@@ -4,9 +4,7 @@
   "keywords": ["thumbnail", "images"],
   "author": "Honza Pokorny",
   "version": "0.6.6",
-  "licenses": [{
-    "type": "BSD"
-  }],
+  "license": "BSD-2-Clause",
   "main": "./src/thumbnail.js",
   "engines": {
     "node": ">=0.8.0"
