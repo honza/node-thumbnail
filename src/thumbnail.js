@@ -69,7 +69,7 @@ createQueue = function(settings) {
     } else {
       var name = task.options.srcPath;
       var ext = path.extname(name);
-      var base = path.basename(name, ext);
+      var base = task.options.basename || path.basename(name, ext);
 
       task.options.dstPath = settings.destination + '/' + settings.prefix + base +
         settings.suffix + ext;
@@ -115,7 +115,8 @@ run = function(settings) {
 
     options = {
       srcPath: settings.source + '/' + image,
-      width: settings.width
+      width: settings.width,
+	  basename: settings.basename
     };
 
     queue.push({options: options}, function() {
