@@ -116,7 +116,7 @@ run = function(settings) {
     options = {
       srcPath: settings.source + '/' + image,
       width: settings.width,
-	  basename: settings.basename
+      basename: settings.basename
     };
 
     queue.push({options: options}, function() {
