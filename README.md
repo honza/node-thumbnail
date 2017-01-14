@@ -57,6 +57,7 @@ defaults = {
   hashingType: 'sha1', // 'sha1', 'md5', 'sha256', 'sha512'
   width: 800,
   concurrency: <num of cpus>,
+  quiet: false, // if set to 'true', console.log status messages will be supressed
   overwrite: false,
   basename: undefined // basename of the thumbnail. If unset, the name of the source file is used as basename.
 };
