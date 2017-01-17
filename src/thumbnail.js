@@ -144,8 +144,8 @@ exports.thumb = function(options, callback) {
 
   }
 
-	var sourceExists = fs.existsSync(options.source);
-	var destExists = fs.existsSync(options.destination);
+  var sourceExists = fs.existsSync(options.source);
+  var destExists = fs.existsSync(options.destination);
 
   if (sourceExists && destExists) {
     settings = _.defaults(options, defaults);
