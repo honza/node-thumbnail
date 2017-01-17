@@ -1,7 +1,7 @@
 node-thumbnail
 ==============
 
-[![npm version](https://badge.fury.io/js/node-thumbnail.svg)](https://badge.fury.io/js/node-thumbnail)
+[![npm version](https://badge.fury.io/js/node-thumbnail.svg)](https://badge.fury.io/js/node-thumbnail) [![Build Status](https://travis-ci.org/honza/node-thumbnail.svg?branch=master)](https://travis-ci.org/honza/node-thumbnail)
 
 thumbnail all the things
 
