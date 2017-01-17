@@ -59,7 +59,10 @@ defaults = {
   concurrency: <num of cpus>,
   quiet: false, // if set to 'true', console.log status messages will be supressed
   overwrite: false,
-  basename: undefined // basename of the thumbnail. If unset, the name of the source file is used as basename.
+  basename: undefined, // basename of the thumbnail. If unset, the name of the source file is used as basename.
+  logger: function(message) {
+    console.log(message);
+  }
 };
 ```
 

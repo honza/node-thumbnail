@@ -23,7 +23,10 @@ defaults = {
   width: 800,
   concurrency: os.cpus().length,
   quiet: false,
-  overwrite: false
+  overwrite: false,
+  logger: function(message) {
+    console.log(message); // eslint-disable-line no-console
+  }
 };
 
 
@@ -88,7 +91,7 @@ createQueue = function(settings) {
       done();
     } else {
       if (!settings.quiet) {
-        console.log('all items have been processed');
+        settings.logger('all items have been processed');
       }
     }
   };
@@ -121,7 +124,7 @@ run = function(settings) {
 
     queue.push({options: options}, function() {
       if (!settings.quiet) {
-        console.log(image);
+        options.logger(image);
       }
     });
 
@@ -135,7 +138,7 @@ exports.thumb = function(options, callback) {
   if (options.args) {
 
     if (options.args.length != 2) {
-      console.log('Please provide a source and destination directories.');
+      options.logger('Please provide a source and destination directories.');
       return;
     }
 
@@ -150,13 +153,13 @@ exports.thumb = function(options, callback) {
   if (sourceExists && destExists) {
     settings = _.defaults(options, defaults);
   } else if (sourceExists && !destExists) {
-    console.log('Destination \'' + options.destination + '\' does not exist.');
+    options.logger('Destination \'' + options.destination + '\' does not exist.');
     return;
   } else if (destExists && !sourceExists) {
-    console.log('Source \'' + options.source + '\' does not exist.');
+    options.logger('Source \'' + options.source + '\' does not exist.');
     return;
   } else {
-    console.log('Source \'' + options.source + '\' and destination \'' + options.destination + '\' do not exist.');
+    options.logger('Source \'' + options.source + '\' and destination \'' + options.destination + '\' do not exist.');
     return;
   }
 
