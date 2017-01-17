@@ -97,14 +97,14 @@ createQueue = function(settings) {
 
 run = function(settings) {
   var images;
-  
+
   if (fs.statSync(settings.source).isFile()) {
     images = [path.basename(settings.source)];
     settings.source = path.dirname(settings.source);
   } else {
     images = fs.readdirSync(settings.source);
   }
-  
+
   images = _.reject(images, function(file) {
     return _.indexOf(extensions, path.extname(file)) === -1;
   });
@@ -144,10 +144,19 @@ exports.thumb = function(options, callback) {
 
   }
 
-  if (fs.existsSync(options.source) && fs.existsSync(options.destination)) {
+  var sourceExists = fs.existsSync(options.source);
+  var destExists = fs.existsSync(options.destination);
+
+  if (sourceExists && destExists) {
     settings = _.defaults(options, defaults);
+  } else if (sourceExists && !destExists) {
+    console.log('Destination \'' + options.destination + '\' does not exist.');
+    return;
+  } else if (destExists && !sourceExists) {
+    console.log('Source \'' + options.source + '\' does not exist.');
+    return;
   } else {
-    console.log("Origin or destination doesn't exist.");
+    console.log('Source \'' + options.source + '\' and destination \'' + options.destination + '\' do not exist.');
     return;
   }
 
