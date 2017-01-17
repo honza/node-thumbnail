@@ -1,5 +1,5 @@
 // node-thumbnail
-// (c) 2012-2014 Honza Pokorny
+// (c) 2012-2017 Honza Pokorny
 // Licensed under BSD
 // https://github.com/honza/node-thumbnail
 
