@@ -153,12 +153,12 @@ exports.thumb = function(options, callback) {
     console.log('Destination \'' + options.destination + '\' does not exist.');
     return;
   } else if (destExists && !sourceExists) {
-		console.log('Source \'' + options.source + '\' does not exist.');
-		return;
-	} else {
-		console.log('Source \'' + options.source + '\' and destination \'' + options.destination + '\' do not exist.');
-		return;
-	}
+    console.log('Source \'' + options.source + '\' does not exist.');
+    return;
+  } else {
+    console.log('Source \'' + options.source + '\' and destination \'' + options.destination + '\' do not exist.');
+    return;
+  }
 
   if (callback) {
     done = callback;
