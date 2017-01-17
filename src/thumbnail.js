@@ -150,13 +150,13 @@ exports.thumb = function(options, callback) {
   if (sourceExists && destExists) {
     settings = _.defaults(options, defaults);
   } else if (sourceExists && !destExists) {
-    console.log(`Destination '${options.destination}' does not exist.`);
+    console.log('Destination \'' + options.destination + '\' does not exist.');
     return;
   } else if (destExists && !sourceExists) {
-		console.log(`Source '${options.source}' does not exist.`);
+		console.log('Source \'' + options.source + '\' does not exist.');
 		return;
 	} else {
-		console.log(`Source '${options.source}' and destination '${options.destination}' do not exist.`);
+		console.log('Source \'' + options.source + '\' and destination \'' + options.destination + '\' do not exist.');
 		return;
 	}
 
