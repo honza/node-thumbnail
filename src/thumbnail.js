@@ -124,7 +124,7 @@ run = function(settings) {
 
     queue.push({options: options}, function() {
       if (!settings.quiet) {
-        options.logger(image);
+        settings.logger(image);
       }
     });
 
@@ -150,15 +150,15 @@ exports.thumb = function(options, callback) {
   var sourceExists = fs.existsSync(options.source);
   var destExists = fs.existsSync(options.destination);
 
-  if (sourceExists && destExists) {
-    settings = _.defaults(options, defaults);
-  } else if (sourceExists && !destExists) {
+  settings = _.defaults(options, defaults);
+
+  if (sourceExists && !destExists) {
     options.logger('Destination \'' + options.destination + '\' does not exist.');
     return;
   } else if (destExists && !sourceExists) {
     options.logger('Source \'' + options.source + '\' does not exist.');
     return;
-  } else {
+  } else if (!sourceExists && !destExists) {
     options.logger('Source \'' + options.source + '\' and destination \'' + options.destination + '\' do not exist.');
     return;
   }
