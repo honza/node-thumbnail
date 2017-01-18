@@ -42,7 +42,7 @@ extensions = [
 ];
 
 
-createQueue = function(settings) {
+createQueue = function(settings, resolve, reject) {
 
   queue = async.queue(function(task, callback) {
 
@@ -90,6 +90,7 @@ createQueue = function(settings) {
     if (done) {
       done();
     } else {
+      resolve();
       if (!settings.quiet) {
         settings.logger('all items have been processed');
       }
@@ -98,7 +99,7 @@ createQueue = function(settings) {
 };
 
 
-run = function(settings) {
+run = function(settings, resolve, reject) {
   var images;
 
   if (fs.statSync(settings.source).isFile()) {
@@ -112,7 +113,7 @@ run = function(settings) {
     return _.indexOf(extensions, path.extname(file)) === -1;
   });
 
-  createQueue(settings);
+  createQueue(settings, resolve, reject);
 
   _.each(images, function(image) {
 
@@ -133,40 +134,50 @@ run = function(settings) {
 
 
 exports.thumb = function(options, callback) {
-  var settings;
+  return new Promise(function(resolve, reject) {
+    var settings;
 
-  if (options.args) {
+    if (options.args) {
 
-    if (options.args.length != 2) {
-      options.logger('Please provide a source and destination directories.');
-      return;
+      if (options.args.length != 2) {
+        options.logger('Please provide a source and destination directories.');
+        return;
+      }
+
+      options.source = options.args[0];
+      options.destination = options.args[1];
+
     }
 
-    options.source = options.args[0];
-    options.destination = options.args[1];
+    var sourceExists = fs.existsSync(options.source);
+    var destExists = fs.existsSync(options.destination);
+    var errorMessage;
 
-  }
+    settings = _.defaults(options, defaults);
 
-  var sourceExists = fs.existsSync(options.source);
-  var destExists = fs.existsSync(options.destination);
+    if (sourceExists && !destExists) {
+      errorMessage = 'Destination \'' + options.destination + '\' does not exist.';
+    } else if (destExists && !sourceExists) {
+      errorMessage = 'Source \'' + options.source + '\' does not exist.';
+    } else if (!sourceExists && !destExists) {
+      errorMessage = 'Source \'' + options.source + '\' and destination \'' +
+        options.destination + '\' do not exist.';
+    }
 
-  settings = _.defaults(options, defaults);
+    if (errorMessage) {
+      options.logger(errorMessage);
 
-  if (sourceExists && !destExists) {
-    options.logger('Destination \'' + options.destination + '\' does not exist.');
-    return;
-  } else if (destExists && !sourceExists) {
-    options.logger('Source \'' + options.source + '\' does not exist.');
-    return;
-  } else if (!sourceExists && !destExists) {
-    options.logger('Source \'' + options.source + '\' and destination \'' + options.destination + '\' do not exist.');
-    return;
-  }
+      if (callback) {
+        return callback(errorMessage);
+      }
 
-  if (callback) {
-    done = callback;
-  }
+      reject(errorMessage);
+    }
 
-  run(settings);
+    if (callback) {
+      done = callback;
+    }
 
+    run(settings, resolve, reject);
+  });
 };
