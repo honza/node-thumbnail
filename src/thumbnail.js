@@ -168,10 +168,10 @@ exports.thumb = function(options, callback) {
       options.logger(errorMessage);
 
       if (callback) {
-        return callback(errorMessage);
+        return callback(new Error(errorMessage));
       }
 
-      reject(errorMessage);
+      reject(new Error(errorMessage));
     }
 
     if (callback) {
