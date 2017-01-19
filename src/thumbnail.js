@@ -135,25 +135,23 @@ run = function(settings, resolve, reject) {
 
 exports.thumb = function(options, callback) {
   return new Promise(function(resolve, reject) {
-    var settings;
+    var settings = _.defaults(options, defaults);
 
+    // options.args is present if run through the command line
     if (options.args) {
 
-      if (options.args.length != 2) {
+      if (options.args.length !== 2) {
         options.logger('Please provide a source and destination directories.');
         return;
       }
 
       options.source = options.args[0];
       options.destination = options.args[1];
-
     }
 
     var sourceExists = fs.existsSync(options.source);
     var destExists = fs.existsSync(options.destination);
     var errorMessage;
-
-    settings = _.defaults(options, defaults);
 
     if (sourceExists && !destExists) {
       errorMessage = 'Destination \'' + options.destination + '\' does not exist.';
