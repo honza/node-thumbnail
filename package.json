@@ -6,7 +6,7 @@
     "images"
   ],
   "author": "Honza Pokorny",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "license": "BSD-2-Clause",
   "main": "./src/thumbnail.js",
   "engines": {
