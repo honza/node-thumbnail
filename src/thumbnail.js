@@ -62,9 +62,7 @@ createQueue = function(settings, resolve, reject) {
           settings.width + path.extname(task.options.srcPath);
 
         if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
-          im.resize(task.options, function(err, stdout, stderr) {
-            callback();
-          });
+          im.resize(task.options, callback);
         }
 
       });
@@ -78,9 +76,7 @@ createQueue = function(settings, resolve, reject) {
         settings.suffix + ext;
 
       if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
-        im.resize(task.options, function(err, stdout, stderr) {
-          callback();
-        });
+        im.resize(task.options, callback);
       }
     }
 
@@ -89,11 +85,12 @@ createQueue = function(settings, resolve, reject) {
   queue.drain = function() {
     if (done) {
       done();
-    } else {
-      resolve();
-      if (!settings.quiet) {
-        settings.logger('all items have been processed');
-      }
+    }
+
+    resolve();
+
+    if (!settings.quiet) {
+      settings.logger('all items have been processed');
     }
   };
 };
@@ -166,7 +163,7 @@ exports.thumb = function(options, callback) {
       options.logger(errorMessage);
 
       if (callback) {
-        return callback(new Error(errorMessage));
+        callback(new Error(errorMessage));
       }
 
       reject(new Error(errorMessage));

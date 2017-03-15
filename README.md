@@ -33,6 +33,10 @@ options:
 api
 ---
 
+You can use this library with callbacks, or with promises.
+
+### callbacks
+
 ```js
 var thumb = require('node-thumbnail').thumb;
 
@@ -42,7 +46,7 @@ thumb({
   source: 'source/path', // could be a filename: dest/path/image.jpg
   destination: 'dest/path',
   concurrency: 4
-}, function(err) {
+}, function(err, stdout, stderr) {
   console.log('All done!');
 });
 ```
@@ -67,6 +71,22 @@ defaults = {
 ```
 
 **Note** you must specify at least `source` and `destination`
+
+### promises
+
+The options that you can pass in are the same as above.
+
+```js
+thumb({
+  source: 'src',
+  destination': 'dest'
+}).then(function() {
+  console.log('Success')
+}).catch(function(e) {
+  console.log('Error', e.toString());
+});
+
+```
 
 installation
 ------------
