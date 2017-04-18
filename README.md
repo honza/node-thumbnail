@@ -81,11 +81,10 @@ thumb({
   source: 'src',
   destination': 'dest'
 }).then(function() {
-  console.log('Success')
+  console.log('Success');
 }).catch(function(e) {
   console.log('Error', e.toString());
 });
-
 ```
 
 installation
