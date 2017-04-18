@@ -90,7 +90,7 @@ createQueue = function(settings, resolve, reject) {
     resolve();
 
     if (!settings.quiet) {
-      settings.logger('all items have been processed');
+      settings.logger('All items have been processed.');
     }
   };
 };
