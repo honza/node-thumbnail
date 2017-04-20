@@ -12,7 +12,7 @@ var im = require('imagemagick');
 var async = require('async');
 var _ = require('underscore');
 
-var options, queue, defaults, done, extensions, createQueue, run;
+var options, queue, defaults, done, extensions, createQueue, run, resizer;
 
 
 defaults = {
@@ -42,6 +42,10 @@ extensions = [
 ];
 
 
+resizer = function(options, callback) {
+  im.resize(options, callback);
+};
+
 createQueue = function(settings, resolve, reject) {
 
   queue = async.queue(function(task, callback) {
@@ -62,7 +66,7 @@ createQueue = function(settings, resolve, reject) {
           settings.width + path.extname(task.options.srcPath);
 
         if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
-          im.resize(task.options, callback);
+          resizer(task.options, callback);
         }
 
       });
@@ -76,7 +80,7 @@ createQueue = function(settings, resolve, reject) {
         settings.suffix + ext;
 
       if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
-        im.resize(task.options, callback);
+        resizer(task.options, callback);
       }
     }
 
