@@ -8,7 +8,6 @@ var path = require('path');
 var crypto = require('crypto');
 var os = require('os');
 
-var im = require('imagemagick');
 var jimp = require('jimp');
 var async = require('async');
 var _ = require('underscore');
