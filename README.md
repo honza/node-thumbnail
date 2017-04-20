@@ -5,10 +5,10 @@ node-thumbnail
 
 thumbnail all the things
 
-node-thumbnail creates a queue of images and converts them asynchronously using
-imagemagick - it's super fast
+node-thumbnail creates a queue of images and converts them asynchronously into
+thumbnails.  node-thumbnail has no binary dependencies --- only javascript.
 
-command-line usage
+Command-line usage
 ------------------
 
     thumb [options] source/path dest/path
@@ -30,7 +30,7 @@ options:
     -o, --overwrite
     -q, --quiet
 
-api
+API
 ---
 
 You can use this library with callbacks, or with promises.
@@ -87,13 +87,12 @@ thumb({
 });
 ```
 
-installation
+Installation
 ------------
 
-    $ brew install imagemagick
     $ npm install node-thumbnail
 
-license
+License
 -------
 
 BSD, short and sweet

@@ -9,6 +9,7 @@ var crypto = require('crypto');
 var os = require('os');
 
 var im = require('imagemagick');
+var jimp = require('jimp');
 var async = require('async');
 var _ = require('underscore');
 
@@ -43,7 +44,15 @@ extensions = [
 
 
 resizer = function(options, callback) {
-  im.resize(options, callback);
+  jimp.read(options.srcPath, function(err, file) {
+    if (err) {
+      throw err;
+    }
+
+    file.resize(options.width, jimp.AUTO);
+    file.write(options.dstPath, callback);
+
+  });
 };
 
 createQueue = function(settings, resolve, reject) {
@@ -149,6 +158,8 @@ exports.thumb = function(options, callback) {
       options.source = options.args[0];
       options.destination = options.args[1];
     }
+
+    settings.width = parseInt(settings.width, 10);
 
     var sourceExists = fs.existsSync(options.source);
     var destExists = fs.existsSync(options.destination);
