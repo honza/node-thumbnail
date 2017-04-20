@@ -21,17 +21,17 @@
     "url": "git://github.com/honza/node-thumbnail.git"
   },
   "dependencies": {
-    "async": ">= 0.1.15",
-    "commander": ">= 1.1.0",
-    "jimp": "^0.2.27",
-    "underscore": ">= 1.4.2"
+    "async": "2.3.0",
+    "commander": "2.9.0",
+    "jimp": "0.2.27",
+    "lodash": "4.17.4"
   },
   "scripts": {
     "test": "jasmine",
     "lint": "eslint src"
   },
   "devDependencies": {
-    "eslint": "^3.13.1",
+    "eslint": "3.19.0",
     "jasmine": "^2.5.3"
   }
 }

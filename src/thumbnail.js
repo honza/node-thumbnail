@@ -10,7 +10,7 @@ var os = require('os');
 
 var jimp = require('jimp');
 var async = require('async');
-var _ = require('underscore');
+var _ = require('lodash');
 
 var options, queue, defaults, done, extensions, createQueue, run, resizer;
 
