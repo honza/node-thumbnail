@@ -51,6 +51,8 @@ resizer = function(options, callback) {
 
 createQueue = function(settings, resolve, reject) {
 
+  var finished = [];
+
   queue = async.queue(function(task, callback) {
 
     if (settings.digest) {
@@ -69,7 +71,10 @@ createQueue = function(settings, resolve, reject) {
           settings.width + path.extname(task.options.srcPath);
 
         if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
-          resizer(task.options, callback);
+          resizer(task.options, function() {
+            finished.push(task.options);
+            callback();
+          });
         }
 
       });
@@ -83,18 +88,21 @@ createQueue = function(settings, resolve, reject) {
         settings.suffix + ext;
 
       if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
-        resizer(task.options, callback);
+        resizer(task.options, function() {
+          finished.push(task.options);
+          callback();
+        });
       }
     }
 
   }, settings.concurrency);
 
-  queue.drain = function() {
+  queue.drain = function(hi) {
     if (done) {
-      done();
+      done(finished, null);
     }
 
-    resolve();
+    resolve(finished, null);
 
     if (!settings.quiet) {
       settings.logger('All items have been processed.');
@@ -176,10 +184,10 @@ exports.thumb = function(options, callback) {
       options.logger(errorMessage);
 
       if (callback) {
-        callback(new Error(errorMessage));
+        callback(null, new Error(errorMessage));
       }
 
-      reject(new Error(errorMessage));
+      reject(null, new Error(errorMessage));
     }
 
     if (callback) {

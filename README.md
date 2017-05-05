@@ -46,7 +46,7 @@ thumb({
   source: 'source/path', // could be a filename: dest/path/image.jpg
   destination: 'dest/path',
   concurrency: 4
-}, function(err, stdout, stderr) {
+}, function(files, err, stdout, stderr) {
   console.log('All done!');
 });
 ```
