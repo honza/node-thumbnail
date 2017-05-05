@@ -33,12 +33,7 @@ defaults = {
 extensions = [
   '.jpg',
   '.jpeg',
-  '.JPG',
-  '.JPEG',
-  '.png',
-  '.PNG',
-  '.gif',
-  '.GIF'
+  '.png'
 ];
 
 
@@ -118,9 +113,13 @@ run = function(settings, resolve, reject) {
     images = fs.readdirSync(settings.source);
   }
 
-  images = _.reject(images, function(file) {
-    return _.indexOf(extensions, path.extname(file)) === -1;
+  var containsInvalidFilenames = _.some(images, function(file) {
+    return _.indexOf(extensions, path.extname(file).toLowerCase()) === -1;
   });
+
+  if (containsInvalidFilenames) {
+    throw new Error('Unsupported file format.');
+  }
 
   createQueue(settings, resolve, reject);
 
