@@ -12,7 +12,7 @@ var jimp = require('jimp');
 var async = require('async');
 var _ = require('lodash');
 
-var options, queue, defaults, done, extensions, createQueue, run, resizer;
+var options, queue, defaults, done, extensions, createQueue, run, resizer, isValidFilename;
 
 
 defaults = {
@@ -24,6 +24,7 @@ defaults = {
   concurrency: os.cpus().length,
   quiet: false,
   overwrite: false,
+  ignore: false, // Ignore unsupported format
   logger: function(message) {
     console.log(message); // eslint-disable-line no-console
   }
@@ -47,6 +48,10 @@ resizer = function(options, callback) {
     file.write(options.dstPath, callback);
 
   });
+};
+
+isValidFilename = function(file) {
+  return _.indexOf(extensions, path.extname(file).toLowerCase()) > -1;
 };
 
 createQueue = function(settings, resolve, reject) {
@@ -121,17 +126,19 @@ run = function(settings, resolve, reject) {
     images = fs.readdirSync(settings.source);
   }
 
-  var containsInvalidFilenames = _.some(images, function(file) {
-    return _.indexOf(extensions, path.extname(file).toLowerCase()) === -1;
-  });
+  var containsInvalidFilenames = _.some(images, _.negate(isValidFilename));
 
-  if (containsInvalidFilenames) {
+  if (containsInvalidFilenames && !settings.ignore) {
     throw new Error('Unsupported file format.');
   }
 
   createQueue(settings, resolve, reject);
 
   _.each(images, function(image) {
+
+    if (!isValidFilename(image)) {
+      return true;
+    }
 
     options = {
       srcPath: settings.source + '/' + image,

@@ -28,6 +28,7 @@ options:
     -c NUM, --concurrency NUM
 
     -o, --overwrite
+    -i, --ignore
     -q, --quiet
 
 API
@@ -64,6 +65,7 @@ defaults = {
   quiet: false, // if set to 'true', console.log status messages will be supressed
   overwrite: false,
   basename: undefined, // basename of the thumbnail. If unset, the name of the source file is used as basename.
+  ignore: false, // Ignore unsupported files in "dest"
   logger: function(message) {
     console.log(message);
   }
