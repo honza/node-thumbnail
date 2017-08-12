@@ -136,7 +136,7 @@ run = function(settings, resolve, reject) {
 
   _.each(images, function(image) {
 
-    if (!isValidFilename(image)) {
+    if (!isValidFilename(image) && !settings.ignore) {
       return true;
     }
 
