@@ -28,10 +28,14 @@
   },
   "scripts": {
     "test": "jasmine",
-    "lint": "eslint src"
+    "lint": "eslint src bin/thumb",
+    "prettier": "prettier --write --single-quote src/thumbnail.js bin/thumb"
   },
   "devDependencies": {
     "eslint": "3.19.0",
-    "jasmine": "^2.5.3"
+    "eslint-config-prettier": "^1.7.0",
+    "eslint-plugin-prettier": "2.1.2",
+    "jasmine": "^2.5.3",
+    "prettier": "^1.5.3"
   }
 }

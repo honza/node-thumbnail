@@ -8,9 +8,15 @@ program
   .option('-s, --suffix [suffix]', 'Add [suffix] to thumb filename', '_thumb')
   .option('-p, --prefix [prefix]', 'Add [prefix] to thumb filename', '')
   .option('-d, --digest', 'Use digest for thumb filename')
-  .option('-t, --hashing-type [type]', 'Hashing type sha1, md5. Must be used with -d')
+  .option(
+    '-t, --hashing-type [type]',
+    'Hashing type sha1, md5. Must be used with -d'
+  )
   .option('-w, --width [width]', 'Thumbnail width in pixels. Default: 800', 800)
-  .option('-c, --concurrency [num]', 'Number of workers (defaults to num of CPUs)')
+  .option(
+    '-c, --concurrency [num]',
+    'Number of workers (defaults to num of CPUs)'
+  )
   .option('-q, --quiet', 'Supress all output')
   .option('-o, --overwrite', 'Overwrite existing thumbs')
   .option('-i, --ignore', 'Ignore unsupported files')
