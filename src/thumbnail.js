@@ -72,8 +72,8 @@ createQueue = function(settings, resolve, reject) {
       stream.on('end', function() {
         var d = hash.digest('hex');
 
-        task.options.dstPath = settings.destination + '/' + d + '_' +
-          settings.width + path.extname(task.options.srcPath);
+        task.options.dstPath = path.join(settings.destination, d + '_' +
+          settings.width + path.extname(task.options.srcPath));
 
         if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
           resizer(task.options, function() {
@@ -89,8 +89,8 @@ createQueue = function(settings, resolve, reject) {
       var ext = path.extname(name);
       var base = task.options.basename || path.basename(name, ext);
 
-      task.options.dstPath = settings.destination + '/' + settings.prefix + base +
-        settings.suffix + ext;
+      task.options.dstPath = path.join(settings.destination, settings.prefix + base +
+        settings.suffix + ext);
 
       if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
         resizer(task.options, function() {
@@ -141,7 +141,7 @@ run = function(settings, resolve, reject) {
     }
 
     options = {
-      srcPath: settings.source + '/' + image,
+      srcPath: path.join(settings.source, image),
       width: settings.width,
       basename: settings.basename
     };
