@@ -32,7 +32,6 @@ defaults = {
   quiet: false,
   overwrite: false,
   ignore: false, // Ignore unsupported format,
-  extension: 'auto',
   logger: function(message) {
     console.log(message); // eslint-disable-line no-console
   }
@@ -91,7 +90,7 @@ createQueue = function(settings, resolve, reject) {
         settings.destination,
         settings.prefix + base + settings.suffix + (extensions.includes(settings.extension) ? settings.extension : ext)
       );
-      
+
       if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
         resizer(task.options, function() {
           finished.push(task.options);
