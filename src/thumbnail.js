@@ -31,7 +31,7 @@ defaults = {
   concurrency: os.cpus().length,
   quiet: false,
   overwrite: false,
-  ignore: false, // Ignore unsupported format,
+  ignore: false, // Ignore unsupported format
   logger: function(message) {
     console.log(message); // eslint-disable-line no-console
   }
@@ -54,6 +54,14 @@ isValidFilename = function(file) {
   return extensions.includes(path.extname(file).toLowerCase());
 };
 
+evalCustomExtension = function(customExtension, path) {
+  if (extensions.includes(customExtension)) {
+    return customExtension;
+  }
+
+  return path.extname(srcPath);
+};
+
 createQueue = function(settings, resolve, reject) {
   var finished = [];
 
@@ -71,7 +79,10 @@ createQueue = function(settings, resolve, reject) {
 
         task.options.dstPath = path.join(
           settings.destination,
-          d + '_' + settings.width + (extensions.includes(settings.extension) ? settings.extension : path.extname(task.options.srcPath))
+          d +
+            '_' +
+            settings.width +
+            evalCustomExtension(settings.extension, task.options.srcPath)
         );
 
         if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
@@ -88,7 +99,10 @@ createQueue = function(settings, resolve, reject) {
 
       task.options.dstPath = path.join(
         settings.destination,
-        settings.prefix + base + settings.suffix + (extensions.includes(settings.extension) ? settings.extension : ext)
+        settings.prefix +
+          base +
+          settings.suffix +
+          evalCustomExtension(settings.extension, name)
       );
 
       if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
