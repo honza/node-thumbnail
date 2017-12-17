@@ -31,7 +31,8 @@ defaults = {
   concurrency: os.cpus().length,
   quiet: false,
   overwrite: false,
-  ignore: false, // Ignore unsupported format
+  ignore: false, // Ignore unsupported format,
+  extension: 'auto',
   logger: function(message) {
     console.log(message); // eslint-disable-line no-console
   }
@@ -51,7 +52,7 @@ resizer = function(options, callback) {
 };
 
 isValidFilename = function(file) {
-  return _.indexOf(extensions, path.extname(file).toLowerCase()) > -1;
+  return extensions.includes(path.extname(file).toLowerCase());
 };
 
 createQueue = function(settings, resolve, reject) {
@@ -71,7 +72,7 @@ createQueue = function(settings, resolve, reject) {
 
         task.options.dstPath = path.join(
           settings.destination,
-          d + '_' + settings.width + path.extname(task.options.srcPath)
+          d + '_' + settings.width + (extensions.includes(settings.extension) ? settings.extension : path.extname(task.options.srcPath))
         );
 
         if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
@@ -88,9 +89,9 @@ createQueue = function(settings, resolve, reject) {
 
       task.options.dstPath = path.join(
         settings.destination,
-        settings.prefix + base + settings.suffix + ext
+        settings.prefix + base + settings.suffix + (extensions.includes(settings.extension) ? settings.extension : ext)
       );
-
+      
       if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
         resizer(task.options, function() {
           finished.push(task.options);
