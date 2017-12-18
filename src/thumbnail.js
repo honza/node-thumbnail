@@ -54,7 +54,7 @@ isValidFilename = function(file) {
   return extensions.includes(path.extname(file).toLowerCase());
 };
 
-evalCustomExtension = function(customExtension, path) {
+evalCustomExtension = function(customExtension, srcPath) {
   if (extensions.includes(customExtension)) {
     return customExtension;
   }
