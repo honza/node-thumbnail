@@ -51,7 +51,15 @@ resizer = function(options, callback) {
 };
 
 isValidFilename = function(file) {
-  return _.indexOf(extensions, path.extname(file).toLowerCase()) > -1;
+  return extensions.includes(path.extname(file).toLowerCase());
+};
+
+evalCustomExtension = function(customExtension, srcPath) {
+  if (extensions.includes(customExtension)) {
+    return customExtension;
+  }
+
+  return path.extname(srcPath);
 };
 
 createQueue = function(settings, resolve, reject) {
@@ -71,7 +79,10 @@ createQueue = function(settings, resolve, reject) {
 
         task.options.dstPath = path.join(
           settings.destination,
-          d + '_' + settings.width + path.extname(task.options.srcPath)
+          d +
+            '_' +
+            settings.width +
+            evalCustomExtension(settings.extension, task.options.srcPath)
         );
 
         if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
@@ -88,7 +99,10 @@ createQueue = function(settings, resolve, reject) {
 
       task.options.dstPath = path.join(
         settings.destination,
-        settings.prefix + base + settings.suffix + ext
+        settings.prefix +
+          base +
+          settings.suffix +
+          evalCustomExtension(settings.extension, name)
       );
 
       if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
