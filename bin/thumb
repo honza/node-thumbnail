@@ -7,6 +7,7 @@ program
   .usage('[options] source/dir dest/dir')
   .option('-s, --suffix [suffix]', 'Add [suffix] to thumb filename', '_thumb')
   .option('-p, --prefix [prefix]', 'Add [prefix] to thumb filename', '')
+  .option('-e, --extension [extension]', 'Force file extension', '')
   .option('-d, --digest', 'Use digest for thumb filename')
   .option(
     '-t, --hashing-type [type]',
