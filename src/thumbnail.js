@@ -31,6 +31,7 @@ defaults = {
   concurrency: os.cpus().length,
   quiet: false,
   overwrite: false,
+  skip: false,
   ignore: false, // Ignore unsupported format
   logger: function(message) {
     console.log(message); // eslint-disable-line no-console
@@ -85,7 +86,11 @@ createQueue = function(settings, resolve, reject) {
             evalCustomExtension(settings.extension, task.options.srcPath)
         );
 
-        if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
+        var fileExists = fs.existsSync(task.options.dstPath);
+        if (settings.skip && fileExists) {
+          finished.push(task.options);
+          callback();
+        } else if (settings.overwrite || !fileExists) {
           resizer(task.options, function() {
             finished.push(task.options);
             callback();
@@ -105,7 +110,11 @@ createQueue = function(settings, resolve, reject) {
           evalCustomExtension(settings.extension, name)
       );
 
-      if (settings.overwrite || !fs.existsSync(task.options.dstPath)) {
+      var fileExists = fs.existsSync(task.options.dstPath);
+      if (settings.skip && fileExists) {
+        finished.push(task.options);
+        callback();
+      } else if (settings.overwrite || !fileExists) {
         resizer(task.options, function() {
           finished.push(task.options);
           callback();
