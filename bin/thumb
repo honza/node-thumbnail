@@ -20,6 +20,7 @@ program
   )
   .option('-q, --quiet', 'Supress all output')
   .option('-o, --overwrite', 'Overwrite existing thumbs')
+  .option('-s, --skip', 'Skip generation of existing thumbs')
   .option('-i, --ignore', 'Ignore unsupported files')
   .parse(process.argv);
 
