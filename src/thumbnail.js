@@ -155,21 +155,20 @@ run = function(settings, resolve, reject) {
   createQueue(settings, resolve, reject);
 
   _.each(images, function(image) {
-    if (!isValidFilename(image) && !settings.ignore) {
-      return true;
+    if (isValidFilename(image)) {
+   
+      options = {
+        srcPath: path.join(settings.source, image),
+        width: settings.width,
+        basename: settings.basename
+      };
+      queue.push({ options: options }, function() {
+        if (!settings.quiet) {
+          settings.logger(image);
+        }
+      });
+    
     }
-
-    options = {
-      srcPath: path.join(settings.source, image),
-      width: settings.width,
-      basename: settings.basename
-    };
-
-    queue.push({ options: options }, function() {
-      if (!settings.quiet) {
-        settings.logger(image);
-      }
-    });
   });
 };
 
