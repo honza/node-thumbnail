@@ -10,7 +10,7 @@
   "license": "BSD-2-Clause",
   "main": "./src/thumbnail.js",
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=8.11.0"
   },
   "bin": {
     "thumb": "./bin/thumb"
