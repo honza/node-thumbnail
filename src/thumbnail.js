@@ -33,15 +33,13 @@ defaults = {
   overwrite: false,
   skip: false,
   ignore: false, // Ignore unsupported format
-  logger: function(message) {
-    console.log(message); // eslint-disable-line no-console
-  }
+  logger: message => console.log(message) // eslint-disable-line no-console
 };
 
 extensions = ['.jpg', '.jpeg', '.png'];
 
-resizer = function(options, callback) {
-  jimp.read(options.srcPath, function(err, file) {
+resizer = (options, callback) =>
+  jimp.read(options.srcPath, (err, file) => {
     if (err) {
       throw err;
     }
@@ -49,13 +47,10 @@ resizer = function(options, callback) {
     file.resize(options.width, jimp.AUTO);
     file.write(options.dstPath, callback);
   });
-};
 
-isValidFilename = function(file) {
-  return extensions.includes(path.extname(file).toLowerCase());
-};
+isValidFilename = file => extensions.includes(path.extname(file).toLowerCase())
 
-evalCustomExtension = function(customExtension, srcPath) {
+evalCustomExtension = (customExtension, srcPath) => {
   if (extensions.includes(customExtension)) {
     return customExtension;
   }
@@ -63,19 +58,17 @@ evalCustomExtension = function(customExtension, srcPath) {
   return path.extname(srcPath);
 };
 
-createQueue = function(settings, resolve, reject) {
+createQueue = (settings, resolve, reject) => {
   const finished = [];
 
-  queue = async.queue(function(task, callback) {
+  queue = async.queue((task, callback) => {
     if (settings.digest) {
       const hash = crypto.createHash(settings.hashingType);
       const stream = fs.ReadStream(task.options.srcPath);
 
-      stream.on('data', function(d) {
-        hash.update(d);
-      });
+      stream.on('data', (d) => hash.update(d));
 
-      stream.on('end', function() {
+      stream.on('end', () => {
         const d = hash.digest('hex');
 
         task.options.dstPath = path.join(
@@ -91,7 +84,7 @@ createQueue = function(settings, resolve, reject) {
           finished.push(task.options);
           callback();
         } else if (settings.overwrite || !fileExists) {
-          resizer(task.options, function() {
+          resizer(task.options, () => {
             finished.push(task.options);
             callback();
           });
@@ -115,7 +108,7 @@ createQueue = function(settings, resolve, reject) {
         finished.push(task.options);
         callback();
       } else if (settings.overwrite || !fileExists) {
-        resizer(task.options, function() {
+        resizer(task.options, () => {
           finished.push(task.options);
           callback();
         });
@@ -123,7 +116,7 @@ createQueue = function(settings, resolve, reject) {
     }
   }, settings.concurrency);
 
-  queue.drain = function(hi) {
+  queue.drain = () => {
     if (done) {
       done(finished, null);
     }
@@ -136,7 +129,7 @@ createQueue = function(settings, resolve, reject) {
   };
 };
 
-run = function(settings, resolve, reject) {
+run = (settings, resolve, reject) => {
   let images;
 
   if (fs.statSync(settings.source).isFile()) {
@@ -154,7 +147,7 @@ run = function(settings, resolve, reject) {
 
   createQueue(settings, resolve, reject);
 
-  _.each(images, function(image) {
+  _.each(images, image => {
     if (isValidFilename(image)) {
 
       options = {
@@ -162,7 +155,7 @@ run = function(settings, resolve, reject) {
         width: settings.width,
         basename: settings.basename
       };
-      queue.push({ options: options }, function() {
+      queue.push({ options: options }, () => {
         if (!settings.quiet) {
           settings.logger(image);
         }
@@ -172,8 +165,8 @@ run = function(settings, resolve, reject) {
   });
 };
 
-exports.thumb = function(options, callback) {
-  return new Promise(function(resolve, reject) {
+exports.thumb = (options, callback) =>
+  new Promise((resolve, reject) => {
     const settings = _.defaults(options, defaults);
 
     // options.args is present if run through the command line
@@ -223,4 +216,3 @@ exports.thumb = function(options, callback) {
 
     run(settings, resolve, reject);
   });
-};
