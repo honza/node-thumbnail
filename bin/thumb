@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var program = require('commander');
+const program = require('commander');
 
 program
   .version('0.14.0')
@@ -24,5 +24,5 @@ program
   .option('-i, --ignore', 'Ignore unsupported files')
   .parse(process.argv);
 
-var main = require('../src/thumbnail.js').thumb;
+const main = require('../src/thumbnail.js').thumb;
 main(program);

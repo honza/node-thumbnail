@@ -3,16 +3,16 @@
 // Licensed under BSD
 // https://github.com/honza/node-thumbnail
 
-var fs = require('fs');
-var path = require('path');
-var crypto = require('crypto');
-var os = require('os');
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const os = require('os');
 
-var jimp = require('jimp');
-var async = require('async');
-var _ = require('lodash');
+const jimp = require('jimp');
+const async = require('async');
+const _ = require('lodash');
 
-var options,
+let options,
   queue,
   defaults,
   done,
@@ -64,19 +64,19 @@ evalCustomExtension = function(customExtension, srcPath) {
 };
 
 createQueue = function(settings, resolve, reject) {
-  var finished = [];
+  const finished = [];
 
   queue = async.queue(function(task, callback) {
     if (settings.digest) {
-      var hash = crypto.createHash(settings.hashingType);
-      var stream = fs.ReadStream(task.options.srcPath);
+      const hash = crypto.createHash(settings.hashingType);
+      const stream = fs.ReadStream(task.options.srcPath);
 
       stream.on('data', function(d) {
         hash.update(d);
       });
 
       stream.on('end', function() {
-        var d = hash.digest('hex');
+        const d = hash.digest('hex');
 
         task.options.dstPath = path.join(
           settings.destination,
@@ -86,7 +86,7 @@ createQueue = function(settings, resolve, reject) {
             evalCustomExtension(settings.extension, task.options.srcPath)
         );
 
-        var fileExists = fs.existsSync(task.options.dstPath);
+        const fileExists = fs.existsSync(task.options.dstPath);
         if (settings.skip && fileExists) {
           finished.push(task.options);
           callback();
@@ -98,9 +98,9 @@ createQueue = function(settings, resolve, reject) {
         }
       });
     } else {
-      var name = task.options.srcPath;
-      var ext = path.extname(name);
-      var base = task.options.basename || path.basename(name, ext);
+      const name = task.options.srcPath;
+      const ext = path.extname(name);
+      const base = task.options.basename || path.basename(name, ext);
 
       task.options.dstPath = path.join(
         settings.destination,
@@ -110,7 +110,7 @@ createQueue = function(settings, resolve, reject) {
           evalCustomExtension(settings.extension, name)
       );
 
-      var fileExists = fs.existsSync(task.options.dstPath);
+      const fileExists = fs.existsSync(task.options.dstPath);
       if (settings.skip && fileExists) {
         finished.push(task.options);
         callback();
@@ -137,7 +137,7 @@ createQueue = function(settings, resolve, reject) {
 };
 
 run = function(settings, resolve, reject) {
-  var images;
+  let images;
 
   if (fs.statSync(settings.source).isFile()) {
     images = [path.basename(settings.source)];
@@ -146,7 +146,7 @@ run = function(settings, resolve, reject) {
     images = fs.readdirSync(settings.source);
   }
 
-  var containsInvalidFilenames = _.some(images, _.negate(isValidFilename));
+  const containsInvalidFilenames = _.some(images, _.negate(isValidFilename));
 
   if (containsInvalidFilenames && !settings.ignore) {
     throw new Error('Unsupported file format.');
@@ -156,7 +156,7 @@ run = function(settings, resolve, reject) {
 
   _.each(images, function(image) {
     if (isValidFilename(image)) {
-   
+
       options = {
         srcPath: path.join(settings.source, image),
         width: settings.width,
@@ -167,14 +167,14 @@ run = function(settings, resolve, reject) {
           settings.logger(image);
         }
       });
-    
+
     }
   });
 };
 
 exports.thumb = function(options, callback) {
   return new Promise(function(resolve, reject) {
-    var settings = _.defaults(options, defaults);
+    const settings = _.defaults(options, defaults);
 
     // options.args is present if run through the command line
     if (options.args) {
@@ -189,9 +189,9 @@ exports.thumb = function(options, callback) {
 
     settings.width = parseInt(settings.width, 10);
 
-    var sourceExists = fs.existsSync(options.source);
-    var destExists = fs.existsSync(options.destination);
-    var errorMessage;
+    const sourceExists = fs.existsSync(options.source);
+    const destExists = fs.existsSync(options.destination);
+    let errorMessage;
 
     if (sourceExists && !destExists) {
       errorMessage =
