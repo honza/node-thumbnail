@@ -48,7 +48,7 @@ resizer = (options, callback) =>
     file.write(options.dstPath, callback);
   });
 
-isValidFilename = file => extensions.includes(path.extname(file).toLowerCase())
+isValidFilename = file => extensions.includes(path.extname(file).toLowerCase());
 
 evalCustomExtension = (customExtension, srcPath) => {
   if (extensions.includes(customExtension)) {
@@ -66,7 +66,7 @@ createQueue = (settings, resolve, reject) => {
       const hash = crypto.createHash(settings.hashingType);
       const stream = fs.ReadStream(task.options.srcPath);
 
-      stream.on('data', (d) => hash.update(d));
+      stream.on('data', d => hash.update(d));
 
       stream.on('end', () => {
         const d = hash.digest('hex');
@@ -149,7 +149,6 @@ run = (settings, resolve, reject) => {
 
   _.each(images, image => {
     if (isValidFilename(image)) {
-
       options = {
         srcPath: path.join(settings.source, image),
         width: settings.width,
@@ -160,7 +159,6 @@ run = (settings, resolve, reject) => {
           settings.logger(image);
         }
       });
-
     }
   });
 };
