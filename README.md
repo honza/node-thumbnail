@@ -83,7 +83,7 @@ The options that you can pass in are the same as above.
 ```js
 thumb({
   source: 'src',
-  destination': 'dest'
+  destination: 'dest'
 }).then(function() {
   console.log('Success');
 }).catch(function(e) {
