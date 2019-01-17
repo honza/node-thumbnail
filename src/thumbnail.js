@@ -42,7 +42,8 @@ extensions = ['.jpg', '.jpeg', '.png'];
 resizer = (options, callback) =>
   jimp.read(options.srcPath, (err, file) => {
     if (err) {
-      throw err;
+      let message = err.message + options.srcPath;
+      return callback(null, message);
     }
 
     file.resize(options.width, jimp.AUTO);
@@ -85,7 +86,11 @@ createQueue = (settings, resolve, reject) => {
           finished.push(task.options);
           callback();
         } else if (settings.overwrite || !fileExists) {
-          resizer(task.options, () => {
+          resizer(task.options, (_, err) => {
+            if (err) {
+              callback(err);
+              return reject(err)
+            }
             finished.push(task.options);
             callback();
           });
@@ -109,7 +114,11 @@ createQueue = (settings, resolve, reject) => {
         finished.push(task.options);
         callback();
       } else if (settings.overwrite || !fileExists) {
-        resizer(task.options, () => {
+        resizer(task.options, (_, err) => {
+          if (err) {
+            callback(err);
+            return reject(err);
+          }
           finished.push(task.options);
           callback();
         });
@@ -159,7 +168,7 @@ run = (settings, resolve, reject) => {
       };
       queue.push({ options: options }, () => {
         if (!settings.quiet) {
-          settings.logger(image);
+          settings.logger('Processing ' + image);
         }
       });
     }
