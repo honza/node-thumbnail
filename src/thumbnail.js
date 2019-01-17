@@ -41,7 +41,7 @@ extensions = ['.jpg', '.jpeg', '.png'];
 resizer = (options, callback) =>
   jimp.read(options.srcPath, (err, file) => {
     if (err) {
-      if(done) return done(null, err);
+      if(done) return done(file, err);
       throw err;
     }
 
