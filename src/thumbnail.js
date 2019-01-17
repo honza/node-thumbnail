@@ -89,7 +89,7 @@ createQueue = (settings, resolve, reject) => {
           resizer(task.options, (_, err) => {
             if (err) {
               callback(err);
-              return reject(err)
+              return reject(err);
             }
             finished.push(task.options);
             callback();
@@ -227,11 +227,11 @@ thumb = (options, callback) =>
     run(settings, resolve, reject);
   });
 
-exports.cli = (options) => {
+exports.cli = options => {
   thumb(options).catch(error => {
     options.logger('ERROR: ' + error);
     process.exit(1);
-  })
+  });
 };
 
 exports.thumb = thumb;
