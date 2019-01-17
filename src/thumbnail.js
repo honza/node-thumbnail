@@ -140,10 +140,12 @@ run = (settings, resolve, reject) => {
     images = fs.readdirSync(settings.source);
   }
 
-  const containsInvalidFilenames = _.some(images, _.negate(isValidFilename));
+  const invalidFilenames = _.filter(images, _.negate(isValidFilename));
+  const containsInvalidFilenames = _.some(invalidFilenames);
 
   if (containsInvalidFilenames && !settings.ignore) {
-    return reject('Your source directory contains unsupported files.');
+    const files = invalidFilenames.join(', ');
+    return reject('Your source directory contains unsupported files: ' + files);
   }
 
   createQueue(settings, resolve, reject);
@@ -206,7 +208,7 @@ thumb = (options, callback) =>
         callback(null, new Error(errorMessage));
       }
 
-      reject(null, new Error(errorMessage));
+      reject(new Error(errorMessage));
     }
 
     if (callback) {
