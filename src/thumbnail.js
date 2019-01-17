@@ -20,7 +20,8 @@ let options,
   createQueue,
   run,
   resizer,
-  isValidFilename;
+  isValidFilename,
+  thumb;
 
 defaults = {
   prefix: '',
@@ -142,7 +143,7 @@ run = (settings, resolve, reject) => {
   const containsInvalidFilenames = _.some(images, _.negate(isValidFilename));
 
   if (containsInvalidFilenames && !settings.ignore) {
-    throw new Error('Unsupported file format.');
+    return reject('Your source directory contains unsupported files.');
   }
 
   createQueue(settings, resolve, reject);
@@ -163,7 +164,7 @@ run = (settings, resolve, reject) => {
   });
 };
 
-exports.thumb = (options, callback) =>
+thumb = (options, callback) =>
   new Promise((resolve, reject) => {
     const settings = _.defaults(options, defaults);
 
@@ -214,3 +215,12 @@ exports.thumb = (options, callback) =>
 
     run(settings, resolve, reject);
   });
+
+exports.cli = (options) => {
+  thumb(options).catch(error => {
+    console.error('ERROR:', error)
+    process.exit(1);
+  })
+};
+
+exports.thumb = thumb;
