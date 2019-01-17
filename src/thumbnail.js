@@ -218,7 +218,7 @@ thumb = (options, callback) =>
 
 exports.cli = (options) => {
   thumb(options).catch(error => {
-    console.error('ERROR:', error)
+    options.logger('ERROR: ' + error);
     process.exit(1);
   })
 };
