@@ -142,11 +142,22 @@ createQueue = (settings, resolve, reject) => {
 run = (settings, resolve, reject) => {
   let images;
 
+  const warnIfContainsDirectories = images => {
+    let dirs = images.filter(image => image.isDirectory());
+    dirs.map(dir => {
+      if (!settings.quiet) {
+        settings.logger(`Warning: '${dir.name}' is a directory, skipping...`);
+      }
+    });
+    return images.filter(image => image.isFile()).map(image => image.name);
+  };
+
   if (fs.statSync(settings.source).isFile()) {
     images = [path.basename(settings.source)];
     settings.source = path.dirname(settings.source);
   } else {
-    images = fs.readdirSync(settings.source);
+    images = fs.readdirSync(settings.source, { withFileTypes: true });
+    images = warnIfContainsDirectories(images);
   }
 
   const invalidFilenames = _.filter(images, _.negate(isValidFilename));
