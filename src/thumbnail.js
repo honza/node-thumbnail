@@ -47,7 +47,9 @@ resizer = (options, callback) =>
     }
 
     file.resize(options.width, jimp.AUTO);
-    file.write(options.dstPath, callback);
+    file.write(options.dstPath, (err, result) => {
+      callback(result, err);
+    });
   });
 
 isValidFilename = file => extensions.includes(path.extname(file).toLowerCase());
