@@ -24,7 +24,7 @@
     "async": "2.3.0",
     "commander": "2.9.0",
     "jimp": "0.2.27",
-    "lodash": "4.17.5"
+    "lodash": "^4.17.15"
   },
   "scripts": {
     "test": "jasmine",
