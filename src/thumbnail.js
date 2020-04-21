@@ -96,6 +96,8 @@ createQueue = (settings, resolve, reject) => {
             finished.push(task.options);
             callback();
           });
+        } else {
+          callback();
         }
       });
     } else {
@@ -124,6 +126,8 @@ createQueue = (settings, resolve, reject) => {
           finished.push(task.options);
           callback();
         });
+      } else {
+        callback();
       }
     }
   }, settings.concurrency);
