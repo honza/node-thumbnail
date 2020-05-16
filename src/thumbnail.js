@@ -29,6 +29,7 @@ defaults = {
   digest: false,
   hashingType: 'sha1',
   width: 800,
+  height: jimp.AUTO,
   concurrency: os.cpus().length,
   quiet: false,
   overwrite: false,
@@ -45,8 +46,20 @@ resizer = (options, callback) =>
       let message = err.message + options.srcPath;
       return callback(null, message);
     }
-
-    file.resize(options.width, jimp.AUTO);
+    switch (options.mode) {
+      case 'contain':
+        file.contain(options.width, options.height)
+        break
+      case 'cover':
+        file.cover(options.width, options.height)
+        break
+      default:
+        file.resize(options.width, options.height)
+        break
+    }
+    if (options.background) {
+      file.background(options.background)
+    }
     file.write(options.dstPath, (err, result) => {
       callback(result, err);
     });
@@ -177,8 +190,11 @@ run = (settings, resolve, reject) => {
       options = {
         srcPath: path.join(settings.source, image),
         width: settings.width,
+        height: settings.height,
+        mode: settings.mode,
+        background: settings.background,
         basename: settings.basename
-      };
+      }
       queue.push({ options: options }, () => {
         if (!settings.quiet) {
           settings.logger('Processing ' + image);
